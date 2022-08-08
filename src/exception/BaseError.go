@@ -18,8 +18,9 @@ func (e *BaseError) GetMessage() string {
 
 func (e *BaseError) setMessage() string {
 	originMessage := e.Message
-	e.Message = "[" + e.InstanceName + "]" + "[" + strconv.Itoa(e.StatusCode) + "]"
+	e.Message = "[" + e.InstanceName + "]" + "[" + strconv.Itoa(e.StatusCode) + "] "
 	if strings.Contains(originMessage, e.Message) {
+		e.Message = originMessage
 		return e.Message
 	}
 	if originMessage == "" {

@@ -1,9 +1,8 @@
 package router
 
 import (
+	log "estj/src/logger"
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
-	"log"
 )
 
 // singleton 객체값(pointer)
@@ -36,6 +35,7 @@ func Start() {
 	}
 	err := routerInstance.Run(":9000") // listen and serve on 0.0.0.0:9000 ("localhost:9000")
 	if err != nil {
-		log.Fatal(errors.Wrap(err, "Error at router"))
+		//log.Fatal(errors.Wrap(err, "Error at router"))
+		log.Fatal("Error at router")
 	}
 }

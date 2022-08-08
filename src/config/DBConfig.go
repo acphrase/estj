@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// TODO: profile 설정 진행 후 변경 예정.
 const (
 	host     = "127.0.0.1"
 	port     = 5432
