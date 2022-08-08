@@ -27,10 +27,12 @@ Postgresql.
  - This will create an executable file.
 
 # What to do next
-1. 회원가입. 
-2. 로그인.
-3. 로그인 유저 확인을 위한 방법. (JWT or API Key or etc)
-4. 미들웨어 구성. (유저 확인이나, 단순코드나 이런 여러가지 확인을 위한 미들웨어. 우선은 로그인 유저.)
-5. 도커 구성.
-6. Web server 사용하여 WAS로 연결하는 방법.
-7. Infrastructure
+1. Profile 나누기. 
+2. 테스트 코드 관련.
+3. 회원가입.
+4. 로그인.
+5. 로그인 유저 확인을 위한 방법. (JWT or API Key or etc)
+6. 미들웨어 구성. (유저 확인이나, 단순코드나 이런 여러가지 확인을 위한 미들웨어. 우선은 로그인 유저.)
+7. 도커 구성.
+8. Web server 사용하여 WAS로 연결하는 방법.
+9. Infrastructure
