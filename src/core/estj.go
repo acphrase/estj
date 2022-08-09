@@ -9,7 +9,24 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func RunApp() {
+// singleton 객체값(pointer)
+var app *App
+
+type App struct {
+}
+
+func init() {
+	app = new(App)
+}
+
+func GetApp() *App {
+	if app == nil {
+		app = new(App)
+	}
+	return app
+}
+
+func (app *App) RunApp() {
 	// Set database.
 	dbInstance := config.GetDB()
 	defer func(db *sqlx.DB) {
@@ -26,9 +43,9 @@ func RunApp() {
 	}
 
 	// Run server.
-	router := router.GetRouter()
-	router.SetTrustedProxiesPlatforms()
-	router.SetCORS()
-	router.SetRouting(listFunc)
-	router.Start()
+	route := router.GetRouter()
+	route.SetTrustedProxiesPlatforms()
+	route.SetCORS()
+	route.SetRouting(listFunc)
+	route.Start()
 }
