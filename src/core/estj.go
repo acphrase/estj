@@ -26,6 +26,9 @@ func RunApp() {
 	}
 
 	// Run server.
+	router := router.GetRouter()
+	router.SetTrustedProxiesPlatforms()
+	router.SetCORS()
 	router.SetRouting(listFunc)
 	router.Start()
 }
