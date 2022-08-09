@@ -4,6 +4,7 @@ import (
 	"estj/src/api"
 	"estj/src/config"
 	"estj/src/router"
+	"flag"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -27,6 +28,13 @@ func GetApp() *App {
 }
 
 func (app *App) RunApp() {
+	// Get argument.
+	profile := flag.String("profile", "prod", "Check profile option")
+	flag.Parse()
+
+	// Init environment variables.
+	InitEnvironment(*profile)
+
 	// Set database.
 	dbInstance := config.GetDB()
 	defer func(db *sqlx.DB) {
