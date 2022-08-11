@@ -19,17 +19,17 @@ const (
 var dbInstance *sqlx.DB
 
 func init() {
-	setDB()
+	initDB()
 }
 
 func GetDB() *sqlx.DB {
 	if dbInstance == nil {
-		setDB()
+		initDB()
 	}
 	return dbInstance
 }
 
-func setDB() {
+func initDB() {
 	if dbInstance == nil {
 		psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 		// db, err := sqlx.Connect("postgres", "user=foo dbname=bar sslmode=disable")
