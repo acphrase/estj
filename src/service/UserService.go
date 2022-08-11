@@ -18,12 +18,21 @@ type UserService struct {
 }
 
 func init() {
+	initUserService()
 	userService = new(UserService)
 	userService.userRepository = repository.GetUserRepository()
 }
 
 func GetUserService() *UserService {
+	if userService == nil {
+		initUserService()
+	}
 	return userService
+}
+
+func initUserService() {
+	userService = new(UserService)
+	userService.userRepository = repository.GetUserRepository()
 }
 
 func (us *UserService) GetAllUser(c *gin.Context) {

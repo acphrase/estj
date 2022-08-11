@@ -9,7 +9,7 @@ import (
 var log *zap.Logger
 
 func init() {
-	config := setLoggerConfig()
+	config := initLoggerConfig()
 
 	var err error
 	log, err = config.Build(zap.AddCallerSkip(1)) // 설정 완료 후 logger build.
@@ -18,7 +18,7 @@ func init() {
 	}
 }
 
-func setLoggerConfig() zap.Config {
+func initLoggerConfig() zap.Config {
 
 	// TODO: profile 설정 진행 후 변경 예정.
 	logOutputList := []string{

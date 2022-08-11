@@ -17,14 +17,18 @@ type App struct {
 }
 
 func init() {
-	app = new(App)
+	initApp()
 }
 
 func GetApp() *App {
 	if app == nil {
-		app = new(App)
+		initApp()
 	}
 	return app
+}
+
+func initApp() {
+	app = new(App)
 }
 
 func (app *App) RunApp() {

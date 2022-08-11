@@ -19,17 +19,17 @@ type Router struct {
 }
 
 func init() {
-	setRouter()
+	initRouter()
 }
 
 func GetRouter() *Router {
 	if router == nil {
-		setRouter()
+		initRouter()
 	}
 	return router
 }
 
-func setRouter() {
+func initRouter() {
 	router = new(Router)
 	router.router = gin.Default()
 }
@@ -68,7 +68,7 @@ func (router *Router) SetRouting(listFunc []func(engine *gin.Engine)) {
 
 func (router *Router) Start() {
 	if router.router == nil {
-		setRouter()
+		initRouter()
 	}
 	err := router.router.Run(":9000") // listen and serve on 0.0.0.0:9000 ("localhost:9000")
 	if err != nil {

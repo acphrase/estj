@@ -14,12 +14,19 @@ type UserRepository struct {
 }
 
 func init() {
-	userRepository = new(UserRepository)
-	userRepository.dbInstance = config.GetDB()
+	initUserRepository()
 }
 
 func GetUserRepository() *UserRepository {
+	if userRepository == nil {
+		initUserRepository()
+	}
 	return userRepository
+}
+
+func initUserRepository() {
+	userRepository = new(UserRepository)
+	userRepository.dbInstance = config.GetDB()
 }
 
 func (ur *UserRepository) GetAllUser() (*[]entity.User, error) {
