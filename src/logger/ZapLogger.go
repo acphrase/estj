@@ -8,34 +8,40 @@ import (
 // singleton 객체값(pointer)
 var log *zap.Logger
 
-func init() {
-	config := initLoggerConfig()
+func InitLogger(logLevel string, logOutputList []string, logOutputListForLoggerError []string) {
+	if log == nil {
+		config := initLoggerConfig(logLevel, logOutputList, logOutputListForLoggerError)
 
-	var err error
-	log, err = config.Build(zap.AddCallerSkip(1)) // 설정 완료 후 logger build.
-	if err != nil {
-		panic(err)
+		var err error
+		log, err = config.Build(zap.AddCallerSkip(1)) // 설정 완료 후 logger build.
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
-func initLoggerConfig() zap.Config {
-
-	// TODO: profile 설정 진행 후 변경 예정.
-	logOutputList := []string{
-		"stdout",
-		"/Volumes/Data/estj/src/estj.log",
-	}
-	logOutputListForLoggerError := []string{
-		"stdout",
-		"/Volumes/Data/estj/src/logger_error.log",
-	}
+func initLoggerConfig(logLevel string, logOutputList []string, logOutputListForLoggerError []string) zap.Config {
 
 	// Set logger config.
 	var loggerConfig zap.Config = zap.NewProductionConfig()
 
 	// Set logging level.
-	// TODO: profile 설정 진행 후 변경 예정.
-	loggerConfig.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	switch logLevel {
+	case "DPANIC", "dpanic":
+		loggerConfig.Level = zap.NewAtomicLevelAt(zap.DPanicLevel)
+	case "DEBUG", "debug":
+		loggerConfig.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	case "ERROR", "error":
+		loggerConfig.Level = zap.NewAtomicLevelAt(zap.ErrorLevel)
+	case "FATAL", "fatal":
+		loggerConfig.Level = zap.NewAtomicLevelAt(zap.FatalLevel)
+	case "PANIC", "panic":
+		loggerConfig.Level = zap.NewAtomicLevelAt(zap.PanicLevel)
+	case "INFO", "info":
+		fallthrough
+	default:
+		loggerConfig.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
+	}
 
 	// Set json encoder config.
 	encoderConfig := zap.NewProductionEncoderConfig()

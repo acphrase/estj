@@ -1,42 +1,39 @@
 package config
 
 import (
+	"estj/src/core/sysconfig"
+	"estj/src/exception"
+	log "estj/src/logger"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-)
-
-// TODO: profile 설정 진행 후 변경 예정.
-const (
-	host     = "127.0.0.1"
-	port     = 5432
-	user     = "gouser"
-	password = "gouser"
-	dbname   = "godb"
+	"github.com/pkg/errors"
+	"reflect"
 )
 
 // singleton 객체값(pointer)
 var dbInstance *sqlx.DB
 
-func init() {
-	initDB()
-}
-
 func GetDB() *sqlx.DB {
 	if dbInstance == nil {
-		initDB()
+		// Get Database info.
+		DBInfo := sysconfig.GetEnvVariables().GetMapVariable("DBInfo")
+		if DBInfo == nil {
+			createProfileErrors := exception.CreateProfileErrors(reflect.TypeOf(dbInstance).String(), "Failed to get database information.")
+			log.Fatal(fmt.Sprintf("%+v", errors.Wrap(createProfileErrors, createProfileErrors.GetMessage())))
+		}
+		InitDB(DBInfo)
 	}
 	return dbInstance
 }
 
-func initDB() {
+func InitDB(dbInformation map[string]interface{}) {
 	if dbInstance == nil {
-		psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
-		// db, err := sqlx.Connect("postgres", "user=foo dbname=bar sslmode=disable")
+		psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", dbInformation["host"], int(dbInformation["port"].(float64)), dbInformation["user"], dbInformation["password"], dbInformation["dbname"])
 		db, err := sqlx.Connect("postgres", psqlInfo)
-		// db, err := sql.Open("postgres", psqlInfo)
 		if err != nil {
-			panic(err)
+			createDatabaseErrors := exception.CreateDatabaseErrors(reflect.TypeOf(dbInstance).String(), "")
+			log.Fatal(fmt.Sprintf("%+v", errors.Wrap(createDatabaseErrors, createDatabaseErrors.GetMessage())))
 		}
 		//defer func(db *sql.DB) {
 		//	err := db.Close()

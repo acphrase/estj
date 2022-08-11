@@ -10,6 +10,10 @@ func ConvertStrToList(str string, sep string) *[]string {
 	parsingStr := strings.TrimLeft(str, "[")
 	parsingStr = strings.TrimRight(parsingStr, "]")
 	parsingResult := strings.Split(parsingStr, sep)
+	for i, v := range parsingResult {
+		v1 := strings.Trim(v, " ")
+		parsingResult[i] = strings.Trim(v1, "\"")
+	}
 	return &parsingResult
 }
 
@@ -36,5 +40,21 @@ func checkInterface(msi map[string]interface{}, key string, value interface{}) {
 		}
 	case reflect.String:
 		msi[key] = value.(string)
+	}
+}
+
+func ConvertInterfaceVariableToMap(key string, variables *map[string]interface{}) map[string]interface{} {
+	if _, ok := (*variables)[key]; ok {
+		return (*variables)[key].(map[string]interface{})
+	} else {
+		return nil
+	}
+}
+
+func ConvertInterfaceVariableToList(key string, variables *map[string]interface{}) []string {
+	if _, ok := (*variables)[key]; ok {
+		return (*variables)[key].([]string)
+	} else {
+		return nil
 	}
 }

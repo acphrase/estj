@@ -3,11 +3,18 @@ package core
 import (
 	"estj/src/api"
 	"estj/src/config"
+	"estj/src/core/sysconfig"
+	"estj/src/exception"
+	"estj/src/logger"
+	log "estj/src/logger"
 	"estj/src/router"
 	"flag"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/pkg/errors"
+	"reflect"
 )
 
 // singleton 객체값(pointer)
@@ -21,14 +28,14 @@ func init() {
 }
 
 func GetApp() *App {
-	if app == nil {
-		initApp()
-	}
+	initApp()
 	return app
 }
 
 func initApp() {
-	app = new(App)
+	if app == nil {
+		app = new(App)
+	}
 }
 
 func (app *App) RunApp() {
@@ -37,7 +44,26 @@ func (app *App) RunApp() {
 	flag.Parse()
 
 	// Init environment variables.
-	InitEnvironment(*profile)
+	sysconfig.InitEnvVariables(*profile)
+
+	// Get Logging information.
+	logLevel := sysconfig.GetEnvVariables().GetStringVariable("LogLevel")
+	logOutputList := sysconfig.GetEnvVariables().GetListVariable("Logging")
+	logOutputListForLoggerError := sysconfig.GetEnvVariables().GetListVariable("LoggingError")
+	//Logging=["stdout", "/Volumes/Data/estj/src/estj.log"]
+	//LoggingError=["stdout", "/Volumes/Data/estj/src/logger_error.log"]
+	// Init logger
+	logger.InitLogger(logLevel, logOutputList, logOutputListForLoggerError)
+
+	// Get Database information.
+	DBInfo := sysconfig.GetEnvVariables().GetMapVariable("DBInfo")
+	if DBInfo == nil {
+		createProfileErrors := exception.CreateProfileErrors(reflect.TypeOf(app).String(), "Failed to get database information.")
+		log.Fatal(fmt.Sprintf("%+v", errors.Wrap(createProfileErrors, createProfileErrors.GetMessage())))
+	}
+
+	// Init Database.
+	config.InitDB(DBInfo)
 
 	// Set database.
 	dbInstance := config.GetDB()

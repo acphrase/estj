@@ -18,19 +18,25 @@ func init() {
 }
 
 func GetUserRepository() *UserRepository {
-	if userRepository == nil {
-		initUserRepository()
-	}
+	initUserRepository()
 	return userRepository
 }
 
 func initUserRepository() {
-	userRepository = new(UserRepository)
-	userRepository.dbInstance = config.GetDB()
+	if userRepository == nil {
+		userRepository = new(UserRepository)
+	}
 }
 
-func (ur *UserRepository) GetAllUser() (*[]entity.User, error) {
+func (userRepository *UserRepository) getDB() *sqlx.DB {
+	if userRepository.dbInstance == nil {
+		userRepository.dbInstance = config.GetDB()
+	}
+	return userRepository.dbInstance
+}
+
+func (userRepository *UserRepository) GetAllUser() (*[]entity.User, error) {
 	var users []entity.User
-	err := ur.dbInstance.Select(&users, "SELECT * FROM public.user")
+	err := userRepository.getDB().Select(&users, "SELECT * FROM public.user")
 	return &users, err
 }

@@ -23,15 +23,15 @@ func init() {
 }
 
 func GetRouter() *Router {
-	if router == nil {
-		initRouter()
-	}
+	initRouter()
 	return router
 }
 
 func initRouter() {
-	router = new(Router)
-	router.router = gin.Default()
+	if router == nil {
+		router = new(Router)
+		router.router = gin.Default()
+	}
 }
 
 func (router *Router) SetTrustedProxiesPlatforms() {

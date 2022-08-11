@@ -24,15 +24,15 @@ func init() {
 }
 
 func GetUserService() *UserService {
-	if userService == nil {
-		initUserService()
-	}
+	initUserService()
 	return userService
 }
 
 func initUserService() {
-	userService = new(UserService)
-	userService.userRepository = repository.GetUserRepository()
+	if userService == nil {
+		userService = new(UserService)
+		userService.userRepository = repository.GetUserRepository()
+	}
 }
 
 func (us *UserService) GetAllUser(c *gin.Context) {

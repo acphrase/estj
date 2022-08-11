@@ -1,4 +1,4 @@
-DB={"host": "127.0.0.1", "port": 5432, "user": "gouser", "password": "gouser", "dbname": "godb"}
+DBInfo={"host": "127.0.0.1", "port": 5432, "user": "gouser", "password": "gouser", "dbname": "godb"}
 
 LogLevel=debug
 Logging=["stdout", "/Volumes/Data/estj/src/estj.log"]
