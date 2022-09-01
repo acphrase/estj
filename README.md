@@ -65,7 +65,7 @@ Postgresql.
  - This will create an executable file.
 
 # What to do next
-1. 테스트 코드 관련.
+~~1. 테스트 코드 관련.~~
 2. 요청, 응답, 변수들의 validation 방법.
 3. 회원가입.
 4. 로그인.
