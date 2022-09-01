@@ -7,9 +7,6 @@ import (
 )
 
 func TestUserRepository_GetAllUser(t *testing.T) {
-	// Start app.
-	StartingTest()
-
 	// Given
 	userRepository := repository.GetUserRepository()
 
@@ -18,7 +15,4 @@ func TestUserRepository_GetAllUser(t *testing.T) {
 
 	// Then
 	assert.True(t, true, len(*users) > 0)
-
-	// End app.
-	EndTest()
 }

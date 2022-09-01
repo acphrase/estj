@@ -9,10 +9,7 @@ import (
 	"testing"
 )
 
-func TestUserController(t *testing.T) {
-	// Start app.
-	StartingTest()
-
+func TestUserController_GET_users(t *testing.T) {
 	// Given
 	route := router.GetRouter().GetRouter()
 	req, _ := http.NewRequest("GET", "/users", nil)
@@ -24,8 +21,5 @@ func TestUserController(t *testing.T) {
 	// Then
 	assert.Equal(t, http.StatusOK, w.Code)
 	responseData, _ := ioutil.ReadAll(w.Body)
-	assert.Equal(t, "haha", string(responseData))
-
-	// End app.
-	EndTest()
+	assert.NotEmpty(t, string(responseData))
 }
