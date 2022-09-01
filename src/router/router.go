@@ -34,6 +34,10 @@ func initRouter() {
 	}
 }
 
+func (router *Router) GetRouter() *gin.Engine {
+	return router.router
+}
+
 func (router *Router) SetTrustedProxiesPlatforms() {
 	err := router.router.SetTrustedProxies([]string{
 		"127.0.0.1",

@@ -66,10 +66,11 @@ Postgresql.
 
 # What to do next
 1. 테스트 코드 관련.
-2. 회원가입.
-3. 로그인.
-4. 로그인 유저 확인을 위한 방법. (JWT or API Key or etc)
-5. 미들웨어 구성. (유저 확인이나, 단순코드나 이런 여러가지 확인을 위한 미들웨어. 우선은 로그인 유저.)
-6. 도커 구성.
-7. Web server 사용하여 WAS로 연결하는 방법.
-8. Infrastructure
+2. 요청, 응답, 변수들의 validation 방법.
+3. 회원가입.
+4. 로그인.
+5. 로그인 유저 확인을 위한 방법. (JWT or API Key or etc)
+6. 미들웨어 구성. (유저 확인이나, 단순코드나 이런 여러가지 확인을 위한 미들웨어. 우선은 로그인 유저.)
+7. 도커 구성.
+8. Web server 사용하여 WAS로 연결하는 방법.
+9. Infrastructure

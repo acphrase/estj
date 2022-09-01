@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	core.GetApp().RunApp()
+	core.GetApp().RunApp(true)
 }

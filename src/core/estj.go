@@ -38,13 +38,18 @@ func initApp() {
 	}
 }
 
-func (app *App) RunApp() {
-	// Get argument.
-	profile := flag.String("profile", "prod", "Check profile option")
-	flag.Parse()
+func (app *App) RunApp(isRunApp bool) {
+	if isRunApp {
+		// Get argument.
+		profile := flag.String("profile", "prod", "Check profile option")
+		flag.Parse()
 
-	// Init environment variables.
-	sysconfig.InitEnvVariables(*profile)
+		// Init environment variables.
+		sysconfig.InitEnvVariables(*profile)
+	} else {
+		// Init environment variables.
+		sysconfig.InitEnvVariables("dev")
+	}
 
 	// Get Logging information.
 	logLevel := sysconfig.GetEnvVariables().GetStringVariable("LogLevel")
@@ -67,12 +72,14 @@ func (app *App) RunApp() {
 
 	// Set database.
 	dbInstance := config.GetDB()
-	defer func(db *sqlx.DB) {
-		err := db.Close()
-		if err != nil {
-			panic(err)
-		}
-	}(dbInstance)
+	if isRunApp {
+		defer func(db *sqlx.DB) {
+			err := db.Close()
+			if err != nil {
+				panic(err)
+			}
+		}(dbInstance)
+	}
 
 	// Set controller list.
 	listFunc := []func(engine *gin.Engine){
@@ -85,5 +92,7 @@ func (app *App) RunApp() {
 	route.SetTrustedProxiesPlatforms()
 	route.SetCORS()
 	route.SetRouting(listFunc)
-	route.Start()
+	if isRunApp {
+		route.Start()
+	}
 }
